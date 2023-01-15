@@ -14,18 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TodoItem _$TodoItemFromJson(Map<String, dynamic> json) {
-  return _TodoItem.fromJson(json);
-}
-
 /// @nodoc
 mixin _$TodoItem {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get discription => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TodoItemCopyWith<TodoItem> get copyWith =>
       throw _privateConstructorUsedError;
@@ -36,7 +31,7 @@ abstract class $TodoItemCopyWith<$Res> {
   factory $TodoItemCopyWith(TodoItem value, $Res Function(TodoItem) then) =
       _$TodoItemCopyWithImpl<$Res, TodoItem>;
   @useResult
-  $Res call({String id, String title, String discription, DateTime createAt});
+  $Res call({int id, String title, String discription, DateTime createAt});
 }
 
 /// @nodoc
@@ -61,7 +56,7 @@ class _$TodoItemCopyWithImpl<$Res, $Val extends TodoItem>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -85,7 +80,7 @@ abstract class _$$_TodoItemCopyWith<$Res> implements $TodoItemCopyWith<$Res> {
       __$$_TodoItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, String discription, DateTime createAt});
+  $Res call({int id, String title, String discription, DateTime createAt});
 }
 
 /// @nodoc
@@ -108,7 +103,7 @@ class __$$_TodoItemCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -126,7 +121,7 @@ class __$$_TodoItemCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
   const _$_TodoItem(
       {required this.id,
@@ -135,11 +130,8 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       required this.createAt})
       : super._();
 
-  factory _$_TodoItem.fromJson(Map<String, dynamic> json) =>
-      _$$_TodoItemFromJson(json);
-
   @override
-  final String id;
+  final int id;
   @override
   final String title;
   @override
@@ -176,7 +168,6 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
                 other.createAt == createAt));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, title, discription, createAt);
@@ -186,27 +177,18 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
   @pragma('vm:prefer-inline')
   _$$_TodoItemCopyWith<_$_TodoItem> get copyWith =>
       __$$_TodoItemCopyWithImpl<_$_TodoItem>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_TodoItemToJson(
-      this,
-    );
-  }
 }
 
 abstract class _TodoItem extends TodoItem {
   const factory _TodoItem(
-      {required final String id,
+      {required final int id,
       required final String title,
       required final String discription,
       required final DateTime createAt}) = _$_TodoItem;
   const _TodoItem._() : super._();
 
-  factory _TodoItem.fromJson(Map<String, dynamic> json) = _$_TodoItem.fromJson;
-
   @override
-  String get id;
+  int get id;
   @override
   String get title;
   @override

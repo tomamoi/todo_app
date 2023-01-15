@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isar/isar.dart';
+import 'package:todo/infrastructure/dto/todo_dto.dart';
+import 'package:todo/infrastructure/todo_repository.dart';
 import 'package:todo/router.dart';
 import 'package:todo/theme.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+Future<void> main() async {
+  final todoIsar = await Isar.open([TodoDtoSchema]);
+  runApp(ProviderScope(
+    overrides: [todoIsarProvider.overrideWithValue(todoIsar)],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends ConsumerWidget {
