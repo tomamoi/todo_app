@@ -14,6 +14,7 @@ class TodoItem with _$TodoItem {
     required String title,
     required String discription,
     required DateTime createAt,
+    required bool isDeleted,
   }) = _TodoItem;
 
   String get createAtText {

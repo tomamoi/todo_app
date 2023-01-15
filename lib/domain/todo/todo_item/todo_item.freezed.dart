@@ -20,6 +20,7 @@ mixin _$TodoItem {
   String get title => throw _privateConstructorUsedError;
   String get discription => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
+  bool get isDeleted => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoItemCopyWith<TodoItem> get copyWith =>
@@ -31,7 +32,12 @@ abstract class $TodoItemCopyWith<$Res> {
   factory $TodoItemCopyWith(TodoItem value, $Res Function(TodoItem) then) =
       _$TodoItemCopyWithImpl<$Res, TodoItem>;
   @useResult
-  $Res call({int id, String title, String discription, DateTime createAt});
+  $Res call(
+      {int id,
+      String title,
+      String discription,
+      DateTime createAt,
+      bool isDeleted});
 }
 
 /// @nodoc
@@ -51,6 +57,7 @@ class _$TodoItemCopyWithImpl<$Res, $Val extends TodoItem>
     Object? title = null,
     Object? discription = null,
     Object? createAt = null,
+    Object? isDeleted = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,6 +76,10 @@ class _$TodoItemCopyWithImpl<$Res, $Val extends TodoItem>
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -80,7 +91,12 @@ abstract class _$$_TodoItemCopyWith<$Res> implements $TodoItemCopyWith<$Res> {
       __$$_TodoItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String title, String discription, DateTime createAt});
+  $Res call(
+      {int id,
+      String title,
+      String discription,
+      DateTime createAt,
+      bool isDeleted});
 }
 
 /// @nodoc
@@ -98,6 +114,7 @@ class __$$_TodoItemCopyWithImpl<$Res>
     Object? title = null,
     Object? discription = null,
     Object? createAt = null,
+    Object? isDeleted = null,
   }) {
     return _then(_$_TodoItem(
       id: null == id
@@ -116,6 +133,10 @@ class __$$_TodoItemCopyWithImpl<$Res>
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -127,7 +148,8 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       {required this.id,
       required this.title,
       required this.discription,
-      required this.createAt})
+      required this.createAt,
+      required this.isDeleted})
       : super._();
 
   @override
@@ -138,10 +160,12 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
   final String discription;
   @override
   final DateTime createAt;
+  @override
+  final bool isDeleted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoItem(id: $id, title: $title, discription: $discription, createAt: $createAt)';
+    return 'TodoItem(id: $id, title: $title, discription: $discription, createAt: $createAt, isDeleted: $isDeleted)';
   }
 
   @override
@@ -152,7 +176,8 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('discription', discription))
-      ..add(DiagnosticsProperty('createAt', createAt));
+      ..add(DiagnosticsProperty('createAt', createAt))
+      ..add(DiagnosticsProperty('isDeleted', isDeleted));
   }
 
   @override
@@ -165,12 +190,14 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
             (identical(other.discription, discription) ||
                 other.discription == discription) &&
             (identical(other.createAt, createAt) ||
-                other.createAt == createAt));
+                other.createAt == createAt) &&
+            (identical(other.isDeleted, isDeleted) ||
+                other.isDeleted == isDeleted));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, title, discription, createAt);
+      Object.hash(runtimeType, id, title, discription, createAt, isDeleted);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +211,8 @@ abstract class _TodoItem extends TodoItem {
       {required final int id,
       required final String title,
       required final String discription,
-      required final DateTime createAt}) = _$_TodoItem;
+      required final DateTime createAt,
+      required final bool isDeleted}) = _$_TodoItem;
   const _TodoItem._() : super._();
 
   @override
@@ -195,6 +223,8 @@ abstract class _TodoItem extends TodoItem {
   String get discription;
   @override
   DateTime get createAt;
+  @override
+  bool get isDeleted;
   @override
   @JsonKey(ignore: true)
   _$$_TodoItemCopyWith<_$_TodoItem> get copyWith =>

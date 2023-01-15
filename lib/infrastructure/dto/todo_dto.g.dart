@@ -27,8 +27,13 @@ const TodoDtoSchema = CollectionSchema(
       name: r'discription',
       type: IsarType.string,
     ),
-    r'title': PropertySchema(
+    r'isDeleted': PropertySchema(
       id: 2,
+      name: r'isDeleted',
+      type: IsarType.bool,
+    ),
+    r'title': PropertySchema(
+      id: 3,
       name: r'title',
       type: IsarType.string,
     )
@@ -38,7 +43,34 @@ const TodoDtoSchema = CollectionSchema(
   deserialize: _todoDtoDeserialize,
   deserializeProp: _todoDtoDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'createAt': IndexSchema(
+      id: -3149045466074267323,
+      name: r'createAt',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'createAt',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'isDeleted': IndexSchema(
+      id: -786475870904832312,
+      name: r'isDeleted',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'isDeleted',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _todoDtoGetId,
@@ -66,7 +98,8 @@ void _todoDtoSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createAt);
   writer.writeString(offsets[1], object.discription);
-  writer.writeString(offsets[2], object.title);
+  writer.writeBool(offsets[2], object.isDeleted);
+  writer.writeString(offsets[3], object.title);
 }
 
 TodoDto _todoDtoDeserialize(
@@ -79,7 +112,8 @@ TodoDto _todoDtoDeserialize(
     createAt: reader.readDateTime(offsets[0]),
     discription: reader.readString(offsets[1]),
     id: id,
-    title: reader.readString(offsets[2]),
+    isDeleted: reader.readBool(offsets[2]),
+    title: reader.readString(offsets[3]),
   );
   return object;
 }
@@ -96,6 +130,8 @@ P _todoDtoDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -118,6 +154,22 @@ extension TodoDtoQueryWhereSort on QueryBuilder<TodoDto, TodoDto, QWhere> {
   QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyCreateAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'createAt'),
+      );
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyIsDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'isDeleted'),
+      );
     });
   }
 }
@@ -185,6 +237,141 @@ extension TodoDtoQueryWhere on QueryBuilder<TodoDto, TodoDto, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtEqualTo(
+      DateTime createAt) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'createAt',
+        value: [createAt],
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtNotEqualTo(
+      DateTime createAt) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createAt',
+              lower: [],
+              upper: [createAt],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createAt',
+              lower: [createAt],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createAt',
+              lower: [createAt],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'createAt',
+              lower: [],
+              upper: [createAt],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtGreaterThan(
+    DateTime createAt, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createAt',
+        lower: [createAt],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtLessThan(
+    DateTime createAt, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createAt',
+        lower: [],
+        upper: [createAt],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtBetween(
+    DateTime lowerCreateAt,
+    DateTime upperCreateAt, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'createAt',
+        lower: [lowerCreateAt],
+        includeLower: includeLower,
+        upper: [upperCreateAt],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isDeletedEqualTo(
+      bool isDeleted) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'isDeleted',
+        value: [isDeleted],
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isDeletedNotEqualTo(
+      bool isDeleted) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isDeleted',
+              lower: [],
+              upper: [isDeleted],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isDeleted',
+              lower: [isDeleted],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isDeleted',
+              lower: [isDeleted],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isDeleted',
+              lower: [],
+              upper: [isDeleted],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }
@@ -443,6 +630,16 @@ extension TodoDtoQueryFilter
     });
   }
 
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> isDeletedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isDeleted',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> titleEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -605,6 +802,18 @@ extension TodoDtoQuerySortBy on QueryBuilder<TodoDto, TodoDto, QSortBy> {
     });
   }
 
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDeleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDeleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -656,6 +865,18 @@ extension TodoDtoQuerySortThenBy
     });
   }
 
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDeleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDeleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -684,6 +905,12 @@ extension TodoDtoQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TodoDto, TodoDto, QDistinct> distinctByIsDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isDeleted');
+    });
+  }
+
   QueryBuilder<TodoDto, TodoDto, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -709,6 +936,12 @@ extension TodoDtoQueryProperty
   QueryBuilder<TodoDto, String, QQueryOperations> discriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'discription');
+    });
+  }
+
+  QueryBuilder<TodoDto, bool, QQueryOperations> isDeletedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isDeleted');
     });
   }
 

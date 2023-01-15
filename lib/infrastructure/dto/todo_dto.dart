@@ -8,7 +8,6 @@ part 'todo_dto.g.dart';
 /// Isarはfreezedをサポートしていないため、DTOに変換しています。
 ///
 /// ドメインへ変換も含めたデータ受け渡し専用のクラス
-
 @collection
 class TodoDto {
   TodoDto({
@@ -16,16 +15,34 @@ class TodoDto {
     required this.title,
     required this.discription,
     required this.createAt,
+    required this.isDeleted,
   });
+
   Id? id;
+
   final String title;
+
   final String discription;
+
+  @Index()
   final DateTime createAt;
+
+  @Index()
+  final bool isDeleted;
+
+  factory TodoDto.fromDomain(TodoItem item) => TodoDto(
+        id: item.id,
+        title: item.title,
+        discription: item.discription,
+        createAt: item.createAt,
+        isDeleted: item.isDeleted,
+      );
 
   TodoItem toDomain() => TodoItem(
         id: id!,
         title: title,
         discription: discription,
         createAt: createAt,
+        isDeleted: isDeleted,
       );
 }
