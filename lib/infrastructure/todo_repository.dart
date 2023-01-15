@@ -12,11 +12,11 @@ final todoRepositoryProvider =
     Provider((ref) => TodoRepository(ref.watch(todoIsarProvider)));
 
 class TodoRepository {
-  TodoRepository(this.isar);
-  final Isar isar;
+  TodoRepository(this._isar);
+  final Isar _isar;
 
-  Future<List<TodoItem>> fetchTodoList(int page) async {
-    final todoDtoCollection = isar.todoDtos;
+  Future<List<TodoItem>> fetchTodos(int page) async {
+    final todoDtoCollection = _isar.todoDtos;
     final todoDtos = await todoDtoCollection
         .where()
         .isDeletedEqualTo(false)
@@ -26,8 +26,8 @@ class TodoRepository {
     return todoDtos.map((dto) => dto.toDomain()).toList();
   }
 
-  Future<List<TodoItem>> fetchDeletedTodoList() async {
-    final todoDtoCollection = isar.todoDtos;
+  Future<List<TodoItem>> fetchDeletedTodos() async {
+    final todoDtoCollection = _isar.todoDtos;
     final todoDtos =
         await todoDtoCollection.where().isDeletedEqualTo(true).findAll();
 
@@ -35,8 +35,8 @@ class TodoRepository {
   }
 
   Future<TodoItem> add(TodoDto dto) async {
-    final todoDtoCollection = isar.todoDtos;
-    final todoItem = await isar.writeTxn(() async {
+    final todoDtoCollection = _isar.todoDtos;
+    final todoItem = await _isar.writeTxn(() async {
       final id = await todoDtoCollection.put(dto);
       final todoItem = (await todoDtoCollection.get(id))!.toDomain();
 
@@ -47,15 +47,15 @@ class TodoRepository {
   }
 
   Future<void> edit(TodoItem item) async {
-    final todoDtoCollection = isar.todoDtos;
-    await isar.writeTxn(() => todoDtoCollection.put(TodoDto.fromDomain(item)));
+    final todoDtoCollection = _isar.todoDtos;
+    await _isar.writeTxn(() => todoDtoCollection.put(TodoDto.fromDomain(item)));
 
     return;
   }
 
   Future<void> deleteAll(List<TodoItem> todoList) async {
-    final todoDtoCollection = isar.todoDtos;
-    await isar.writeTxn(() =>
+    final todoDtoCollection = _isar.todoDtos;
+    await _isar.writeTxn(() =>
         todoDtoCollection.deleteAll(todoList.map((item) => item.id).toList()));
 
     return;

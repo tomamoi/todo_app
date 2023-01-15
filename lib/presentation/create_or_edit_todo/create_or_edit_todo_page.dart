@@ -32,7 +32,7 @@ class CreateOrEditTodoPage extends ConsumerWidget {
 
   /// 新しくtodoを作成する場合はnullを渡します。
   ///
-  /// 編集の場合は編集したい[TodoItem]を渡します。
+  /// 編集の場合は、編集したい[TodoItem]を渡します。
   final TodoItem? item;
 
   @override
