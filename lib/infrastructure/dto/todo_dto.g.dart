@@ -36,6 +36,11 @@ const TodoDtoSchema = CollectionSchema(
       id: 3,
       name: r'title',
       type: IsarType.string,
+    ),
+    r'updatedAt': PropertySchema(
+      id: 4,
+      name: r'updatedAt',
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _todoDtoEstimateSize,
@@ -100,6 +105,7 @@ void _todoDtoSerialize(
   writer.writeString(offsets[1], object.discription);
   writer.writeBool(offsets[2], object.isDeleted);
   writer.writeString(offsets[3], object.title);
+  writer.writeDateTime(offsets[4], object.updatedAt);
 }
 
 TodoDto _todoDtoDeserialize(
@@ -114,6 +120,7 @@ TodoDto _todoDtoDeserialize(
     id: id,
     isDeleted: reader.readBool(offsets[2]),
     title: reader.readString(offsets[3]),
+    updatedAt: reader.readDateTime(offsets[4]),
   );
   return object;
 }
@@ -133,6 +140,8 @@ P _todoDtoDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -769,6 +778,59 @@ extension TodoDtoQueryFilter
       ));
     });
   }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> updatedAtEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> updatedAtGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> updatedAtLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'updatedAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> updatedAtBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'updatedAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension TodoDtoQueryObject
@@ -823,6 +885,18 @@ extension TodoDtoQuerySortBy on QueryBuilder<TodoDto, TodoDto, QSortBy> {
   QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByUpdatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 }
@@ -888,6 +962,18 @@ extension TodoDtoQuerySortThenBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByUpdatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'updatedAt', Sort.desc);
+    });
+  }
 }
 
 extension TodoDtoQueryWhereDistinct
@@ -915,6 +1001,12 @@ extension TodoDtoQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QDistinct> distinctByUpdatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'updatedAt');
     });
   }
 }
@@ -948,6 +1040,12 @@ extension TodoDtoQueryProperty
   QueryBuilder<TodoDto, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
+    });
+  }
+
+  QueryBuilder<TodoDto, DateTime, QQueryOperations> updatedAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'updatedAt');
     });
   }
 }

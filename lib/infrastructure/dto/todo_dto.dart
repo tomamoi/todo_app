@@ -16,6 +16,7 @@ class TodoDto {
     required this.discription,
     required this.createAt,
     required this.isDeleted,
+    required this.updatedAt,
   });
 
   Id? id;
@@ -30,12 +31,15 @@ class TodoDto {
   @Index()
   final bool isDeleted;
 
+  final DateTime updatedAt;
+
   factory TodoDto.fromDomain(TodoItem item) => TodoDto(
         id: item.id,
         title: item.title,
         discription: item.discription,
         createAt: item.createAt,
         isDeleted: item.isDeleted,
+        updatedAt: item.updatedAt,
       );
 
   TodoItem toDomain() => TodoItem(
@@ -44,5 +48,6 @@ class TodoDto {
         discription: discription,
         createAt: createAt,
         isDeleted: isDeleted,
+        updatedAt: updatedAt,
       );
 }

@@ -20,7 +20,12 @@ mixin _$TodoItem {
   String get title => throw _privateConstructorUsedError;
   String get discription => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
+
+  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  ///
+  /// 90日経過すると完全に削除される設定となっています。
   bool get isDeleted => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoItemCopyWith<TodoItem> get copyWith =>
@@ -37,7 +42,8 @@ abstract class $TodoItemCopyWith<$Res> {
       String title,
       String discription,
       DateTime createAt,
-      bool isDeleted});
+      bool isDeleted,
+      DateTime updatedAt});
 }
 
 /// @nodoc
@@ -58,6 +64,7 @@ class _$TodoItemCopyWithImpl<$Res, $Val extends TodoItem>
     Object? discription = null,
     Object? createAt = null,
     Object? isDeleted = null,
+    Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -80,6 +87,10 @@ class _$TodoItemCopyWithImpl<$Res, $Val extends TodoItem>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -96,7 +107,8 @@ abstract class _$$_TodoItemCopyWith<$Res> implements $TodoItemCopyWith<$Res> {
       String title,
       String discription,
       DateTime createAt,
-      bool isDeleted});
+      bool isDeleted,
+      DateTime updatedAt});
 }
 
 /// @nodoc
@@ -115,6 +127,7 @@ class __$$_TodoItemCopyWithImpl<$Res>
     Object? discription = null,
     Object? createAt = null,
     Object? isDeleted = null,
+    Object? updatedAt = null,
   }) {
     return _then(_$_TodoItem(
       id: null == id
@@ -137,6 +150,10 @@ class __$$_TodoItemCopyWithImpl<$Res>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -149,7 +166,8 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       required this.title,
       required this.discription,
       required this.createAt,
-      required this.isDeleted})
+      required this.isDeleted,
+      required this.updatedAt})
       : super._();
 
   @override
@@ -160,12 +178,18 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
   final String discription;
   @override
   final DateTime createAt;
+
+  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  ///
+  /// 90日経過すると完全に削除される設定となっています。
   @override
   final bool isDeleted;
+  @override
+  final DateTime updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoItem(id: $id, title: $title, discription: $discription, createAt: $createAt, isDeleted: $isDeleted)';
+    return 'TodoItem(id: $id, title: $title, discription: $discription, createAt: $createAt, isDeleted: $isDeleted, updatedAt: $updatedAt)';
   }
 
   @override
@@ -177,7 +201,8 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('discription', discription))
       ..add(DiagnosticsProperty('createAt', createAt))
-      ..add(DiagnosticsProperty('isDeleted', isDeleted));
+      ..add(DiagnosticsProperty('isDeleted', isDeleted))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
@@ -192,12 +217,14 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
             (identical(other.createAt, createAt) ||
                 other.createAt == createAt) &&
             (identical(other.isDeleted, isDeleted) ||
-                other.isDeleted == isDeleted));
+                other.isDeleted == isDeleted) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, discription, createAt, isDeleted);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, discription, createAt, isDeleted, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -212,7 +239,8 @@ abstract class _TodoItem extends TodoItem {
       required final String title,
       required final String discription,
       required final DateTime createAt,
-      required final bool isDeleted}) = _$_TodoItem;
+      required final bool isDeleted,
+      required final DateTime updatedAt}) = _$_TodoItem;
   const _TodoItem._() : super._();
 
   @override
@@ -224,7 +252,13 @@ abstract class _TodoItem extends TodoItem {
   @override
   DateTime get createAt;
   @override
+
+  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  ///
+  /// 90日経過すると完全に削除される設定となっています。
   bool get isDeleted;
+  @override
+  DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_TodoItemCopyWith<_$_TodoItem> get copyWith =>

@@ -14,7 +14,12 @@ class TodoItem with _$TodoItem {
     required String title,
     required String discription,
     required DateTime createAt,
+
+    /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+    ///
+    /// 90日経過すると完全に削除される設定となっています。
     required bool isDeleted,
+    required DateTime updatedAt,
   }) = _TodoItem;
 
   String get createAtText {

@@ -15,12 +15,12 @@ class TodoRepository {
   TodoRepository(this.isar);
   final Isar isar;
 
-  Future<List<TodoItem>> fetchTodoList() async {
+  Future<List<TodoItem>> fetchTodoList(int page) async {
     final todoDtoCollection = isar.todoDtos;
     final todoDtos = await todoDtoCollection
         .where()
         .isDeletedEqualTo(false)
-        .limit(20)
+        .limit(page)
         .findAll();
 
     return todoDtos.map((dto) => dto.toDomain()).toList();
