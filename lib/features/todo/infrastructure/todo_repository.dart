@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
-import 'package:todo/domain/todo/todo_item/todo_item.dart';
-import 'package:todo/infrastructure/dto/todo_dto.dart';
+import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/infrastructure/dto/todo_dto.dart';
 
 /// main.dartでoverrideを行います。
 ///

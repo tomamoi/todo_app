@@ -102,7 +102,7 @@ class __$$_TodoListCopyWithImpl<$Res>
 
 class _$_TodoList extends _TodoList with DiagnosticableTreeMixin {
   const _$_TodoList(
-      {required final List<TodoItem> items, required this.hasReachedMax})
+      {required final List<TodoItem> items, this.hasReachedMax = false})
       : _items = items,
         super._();
 
@@ -115,6 +115,7 @@ class _$_TodoList extends _TodoList with DiagnosticableTreeMixin {
   }
 
   @override
+  @JsonKey()
   final bool hasReachedMax;
 
   @override
@@ -155,7 +156,7 @@ class _$_TodoList extends _TodoList with DiagnosticableTreeMixin {
 abstract class _TodoList extends TodoList {
   const factory _TodoList(
       {required final List<TodoItem> items,
-      required final bool hasReachedMax}) = _$_TodoList;
+      final bool hasReachedMax}) = _$_TodoList;
   const _TodoList._() : super._();
 
   @override

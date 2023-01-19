@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:todo/domain/todo/todo_item/todo_item.dart';
+import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 
 part 'todo_dto.g.dart';
 

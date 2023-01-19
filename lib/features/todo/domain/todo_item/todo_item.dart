@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
-part 'todo_item.freezed.dart';
+part 'package:todo/features/todo/domain/todo_item/todo_item.freezed.dart';
 
 @freezed
 class TodoItem with _$TodoItem {
@@ -27,4 +27,8 @@ class TodoItem with _$TodoItem {
 
     return formatter.format(createAt);
   }
+
+  bool get isEmptyTitle => title.isEmpty;
+
+  bool get isEmptyDiscription => discription.isEmpty;
 }

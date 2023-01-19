@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/domain/todo/todo_item/todo_item.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/presentation/todo_list_notifier.dart';
 import 'package:todo/theme.dart';
 
 final _textEditingControllerProvider =
@@ -47,10 +49,26 @@ class CreateOrEditTodoPage extends ConsumerWidget {
       appBar: AppBar(
         leading: IconButton(
           // 戻るボタン押下で保存されるようにします。
-          onPressed: () {
+          onPressed: () async {
             final title = titleEditingController.text;
             final discription = discriptionEditingController.text;
             if (title.isEmpty && discription.isEmpty) return;
+            final asyncNotifier =
+                ref.read(todoListAsyncNotifierProvider.notifier);
+            if (item == null) {
+              await asyncNotifier.addTodoItem(
+                title: title,
+                discription: discription,
+              );
+            } else {
+              await asyncNotifier.editTodoItem(
+                title: title,
+                discription: discription,
+                item: item!,
+              );
+            }
+            if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
+            context.go('/');
           },
           icon: Icon(
             Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/constants.dart';
-import 'package:todo/domain/todo/todo_item/todo_item.dart';
-import 'package:todo/infrastructure/todo_repository.dart';
+import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
 
 final fetchTodosUsecaseProvider =
     Provider.autoDispose<FetchTodosUsecase>((ref) {
