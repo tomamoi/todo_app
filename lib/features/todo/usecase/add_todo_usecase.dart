@@ -21,7 +21,7 @@ class AddTodoUsecase {
         title: title,
         discription: discription,
         createAt: now,
-        isDeleted: false,
+        isGarbage: false,
         updatedAt: now,
       );
       final todoItem = await _repository.add(todoDto);

@@ -52,7 +52,12 @@ class CreateOrEditTodoPage extends ConsumerWidget {
           onPressed: () async {
             final title = titleEditingController.text;
             final discription = discriptionEditingController.text;
-            if (title.isEmpty && discription.isEmpty) return;
+
+            if (title.isEmpty && discription.isEmpty) {
+              context.pop();
+
+              return;
+            }
             final asyncNotifier =
                 ref.read(todoListAsyncNotifierProvider.notifier);
             if (item == null) {
@@ -61,6 +66,11 @@ class CreateOrEditTodoPage extends ConsumerWidget {
                 discription: discription,
               );
             } else {
+              if (title == item!.title && discription == item!.discription) {
+                context.pop();
+
+                return;
+              }
               await asyncNotifier.editTodoItem(
                 title: title,
                 discription: discription,
@@ -68,7 +78,7 @@ class CreateOrEditTodoPage extends ConsumerWidget {
               );
             }
             if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
-            context.go('/');
+            context.pop();
           },
           icon: Icon(
             Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,

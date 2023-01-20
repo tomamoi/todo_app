@@ -15,7 +15,7 @@ class TodoDto {
     required this.title,
     required this.discription,
     required this.createAt,
-    required this.isDeleted,
+    required this.isGarbage,
     required this.updatedAt,
   });
 
@@ -25,12 +25,12 @@ class TodoDto {
 
   final String discription;
 
-  @Index()
   final DateTime createAt;
 
   @Index()
-  final bool isDeleted;
+  final bool isGarbage;
 
+  @Index()
   final DateTime updatedAt;
 
   factory TodoDto.fromDomain(TodoItem item) => TodoDto(
@@ -38,7 +38,7 @@ class TodoDto {
         title: item.title,
         discription: item.discription,
         createAt: item.createAt,
-        isDeleted: item.isDeleted,
+        isGarbage: item.isGarbage,
         updatedAt: item.updatedAt,
       );
 
@@ -47,7 +47,7 @@ class TodoDto {
         title: title,
         discription: discription,
         createAt: createAt,
-        isDeleted: isDeleted,
+        isGarbage: isGarbage,
         updatedAt: updatedAt,
       );
 }

@@ -27,9 +27,9 @@ const TodoDtoSchema = CollectionSchema(
       name: r'discription',
       type: IsarType.string,
     ),
-    r'isDeleted': PropertySchema(
+    r'isGarbage': PropertySchema(
       id: 2,
-      name: r'isDeleted',
+      name: r'isGarbage',
       type: IsarType.bool,
     ),
     r'title': PropertySchema(
@@ -49,27 +49,27 @@ const TodoDtoSchema = CollectionSchema(
   deserializeProp: _todoDtoDeserializeProp,
   idName: r'id',
   indexes: {
-    r'createAt': IndexSchema(
-      id: -3149045466074267323,
-      name: r'createAt',
+    r'isGarbage': IndexSchema(
+      id: -5308572968321037491,
+      name: r'isGarbage',
       unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
-          name: r'createAt',
+          name: r'isGarbage',
           type: IndexType.value,
           caseSensitive: false,
         )
       ],
     ),
-    r'isDeleted': IndexSchema(
-      id: -786475870904832312,
-      name: r'isDeleted',
+    r'updatedAt': IndexSchema(
+      id: -6238191080293565125,
+      name: r'updatedAt',
       unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
-          name: r'isDeleted',
+          name: r'updatedAt',
           type: IndexType.value,
           caseSensitive: false,
         )
@@ -103,7 +103,7 @@ void _todoDtoSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createAt);
   writer.writeString(offsets[1], object.discription);
-  writer.writeBool(offsets[2], object.isDeleted);
+  writer.writeBool(offsets[2], object.isGarbage);
   writer.writeString(offsets[3], object.title);
   writer.writeDateTime(offsets[4], object.updatedAt);
 }
@@ -118,7 +118,7 @@ TodoDto _todoDtoDeserialize(
     createAt: reader.readDateTime(offsets[0]),
     discription: reader.readString(offsets[1]),
     id: id,
-    isDeleted: reader.readBool(offsets[2]),
+    isGarbage: reader.readBool(offsets[2]),
     title: reader.readString(offsets[3]),
     updatedAt: reader.readDateTime(offsets[4]),
   );
@@ -166,18 +166,18 @@ extension TodoDtoQueryWhereSort on QueryBuilder<TodoDto, TodoDto, QWhere> {
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyCreateAt() {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyIsGarbage() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'createAt'),
+        const IndexWhereClause.any(indexName: r'isGarbage'),
       );
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyIsDeleted() {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhere> anyUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'isDeleted'),
+        const IndexWhereClause.any(indexName: r'updatedAt'),
       );
     });
   }
@@ -249,138 +249,138 @@ extension TodoDtoQueryWhere on QueryBuilder<TodoDto, TodoDto, QWhereClause> {
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtEqualTo(
-      DateTime createAt) {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isGarbageEqualTo(
+      bool isGarbage) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'createAt',
-        value: [createAt],
+        indexName: r'isGarbage',
+        value: [isGarbage],
       ));
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtNotEqualTo(
-      DateTime createAt) {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isGarbageNotEqualTo(
+      bool isGarbage) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'createAt',
+              indexName: r'isGarbage',
               lower: [],
-              upper: [createAt],
+              upper: [isGarbage],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'createAt',
-              lower: [createAt],
+              indexName: r'isGarbage',
+              lower: [isGarbage],
               includeLower: false,
               upper: [],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'createAt',
-              lower: [createAt],
+              indexName: r'isGarbage',
+              lower: [isGarbage],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'createAt',
+              indexName: r'isGarbage',
               lower: [],
-              upper: [createAt],
+              upper: [isGarbage],
               includeUpper: false,
             ));
       }
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtGreaterThan(
-    DateTime createAt, {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> updatedAtEqualTo(
+      DateTime updatedAt) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'updatedAt',
+        value: [updatedAt],
+      ));
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> updatedAtNotEqualTo(
+      DateTime updatedAt) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updatedAt',
+              lower: [],
+              upper: [updatedAt],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updatedAt',
+              lower: [updatedAt],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updatedAt',
+              lower: [updatedAt],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'updatedAt',
+              lower: [],
+              upper: [updatedAt],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> updatedAtGreaterThan(
+    DateTime updatedAt, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'createAt',
-        lower: [createAt],
+        indexName: r'updatedAt',
+        lower: [updatedAt],
         includeLower: include,
         upper: [],
       ));
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtLessThan(
-    DateTime createAt, {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> updatedAtLessThan(
+    DateTime updatedAt, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'createAt',
+        indexName: r'updatedAt',
         lower: [],
-        upper: [createAt],
+        upper: [updatedAt],
         includeUpper: include,
       ));
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> createAtBetween(
-    DateTime lowerCreateAt,
-    DateTime upperCreateAt, {
+  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> updatedAtBetween(
+    DateTime lowerUpdatedAt,
+    DateTime upperUpdatedAt, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'createAt',
-        lower: [lowerCreateAt],
+        indexName: r'updatedAt',
+        lower: [lowerUpdatedAt],
         includeLower: includeLower,
-        upper: [upperCreateAt],
+        upper: [upperUpdatedAt],
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isDeletedEqualTo(
-      bool isDeleted) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'isDeleted',
-        value: [isDeleted],
-      ));
-    });
-  }
-
-  QueryBuilder<TodoDto, TodoDto, QAfterWhereClause> isDeletedNotEqualTo(
-      bool isDeleted) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'isDeleted',
-              lower: [],
-              upper: [isDeleted],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'isDeleted',
-              lower: [isDeleted],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'isDeleted',
-              lower: [isDeleted],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'isDeleted',
-              lower: [],
-              upper: [isDeleted],
-              includeUpper: false,
-            ));
-      }
     });
   }
 }
@@ -639,11 +639,11 @@ extension TodoDtoQueryFilter
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> isDeletedEqualTo(
+  QueryBuilder<TodoDto, TodoDto, QAfterFilterCondition> isGarbageEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isDeleted',
+        property: r'isGarbage',
         value: value,
       ));
     });
@@ -864,15 +864,15 @@ extension TodoDtoQuerySortBy on QueryBuilder<TodoDto, TodoDto, QSortBy> {
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsDeleted() {
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsGarbage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
+      return query.addSortBy(r'isGarbage', Sort.asc);
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsDeletedDesc() {
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> sortByIsGarbageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
+      return query.addSortBy(r'isGarbage', Sort.desc);
     });
   }
 
@@ -939,15 +939,15 @@ extension TodoDtoQuerySortThenBy
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsDeleted() {
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsGarbage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
+      return query.addSortBy(r'isGarbage', Sort.asc);
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsDeletedDesc() {
+  QueryBuilder<TodoDto, TodoDto, QAfterSortBy> thenByIsGarbageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
+      return query.addSortBy(r'isGarbage', Sort.desc);
     });
   }
 
@@ -991,9 +991,9 @@ extension TodoDtoQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TodoDto, TodoDto, QDistinct> distinctByIsDeleted() {
+  QueryBuilder<TodoDto, TodoDto, QDistinct> distinctByIsGarbage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isDeleted');
+      return query.addDistinctBy(r'isGarbage');
     });
   }
 
@@ -1031,9 +1031,9 @@ extension TodoDtoQueryProperty
     });
   }
 
-  QueryBuilder<TodoDto, bool, QQueryOperations> isDeletedProperty() {
+  QueryBuilder<TodoDto, bool, QQueryOperations> isGarbageProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isDeleted');
+      return query.addPropertyName(r'isGarbage');
     });
   }
 

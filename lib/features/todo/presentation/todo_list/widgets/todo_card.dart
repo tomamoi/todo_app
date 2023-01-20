@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/theme.dart';
 
@@ -10,12 +11,17 @@ class TodoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => context.push('/todo/${todoItem.id}', extra: todoItem),
       child: Container(
+        margin: const EdgeInsets.only(top: 25, left: 15, right: 15),
         padding:
             const EdgeInsets.only(top: 16, bottom: 18, left: 15, right: 15),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.white,
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               todoItem.isEmptyTitle ? 'タイトル未記入' : todoItem.title,
@@ -28,7 +34,7 @@ class TodoCard extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             Text(
-              todoItem.title,
+              todoItem.discription,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w300,
@@ -37,7 +43,7 @@ class TodoCard extends StatelessWidget {
             ),
             const SizedBox(height: 17),
             Text(
-              todoItem.createAtText,
+              todoItem.updatedAtText,
               style: const TextStyle(
                 fontSize: 12,
                 color: AppColor.paleTextColor,

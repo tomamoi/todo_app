@@ -18,18 +18,24 @@ class TodoRepository {
   Future<List<TodoItem>> fetchTodos(int page) async {
     final todoDtoCollection = _isar.todoDtos;
     final todoDtos = await todoDtoCollection
-        .where()
-        .isDeletedEqualTo(false)
+        .where(sort: Sort.desc)
+        .anyUpdatedAt()
+        .filter()
+        .isGarbageEqualTo(false)
         .limit(page)
         .findAll();
 
     return todoDtos.map((dto) => dto.toDomain()).toList();
   }
 
-  Future<List<TodoItem>> fetchDeletedTodos() async {
+  Future<List<TodoItem>> fetchGarbageTodos() async {
     final todoDtoCollection = _isar.todoDtos;
-    final todoDtos =
-        await todoDtoCollection.where().isDeletedEqualTo(true).findAll();
+    final todoDtos = await todoDtoCollection
+        .where(sort: Sort.desc)
+        .anyUpdatedAt()
+        .filter()
+        .isGarbageEqualTo(true)
+        .findAll();
 
     return todoDtos.map((dto) => dto.toDomain()).toList();
   }

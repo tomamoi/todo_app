@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todo/constants.dart';
 import 'package:todo/features/todo/domain/todo_item/todo_item.dart';
 
-part 'package:todo/features/todo/domain/todo_list/todo_list.freezed.dart';
+part 'todo_list.freezed.dart';
 
 @freezed
 class TodoList with _$TodoList {
@@ -26,15 +26,30 @@ class TodoList with _$TodoList {
     );
   }
 
+  int get length => items.length;
+
   TodoList add(TodoItem item) => copyWith(items: [item, ...items]);
 
   TodoList edit(TodoItem todoItem) {
     // idからリストのindexを調べます。
     final index = items.map((item) => item.id).toList().indexOf(todoItem.id);
-    items
+    final editedItem = List.of(items)
       ..removeAt(index)
-      ..insert(index, todoItem);
+      ..insert(0, todoItem);
 
-    return copyWith(items: [...items]);
+    return copyWith(items: editedItem);
+  }
+
+  TodoList remove(TodoItem todoItem) {
+    final index = items.map((item) => item.id).toList().indexOf(todoItem.id);
+    final removedItem = List.of(items)..removeAt(index);
+
+    return copyWith(items: removedItem);
+  }
+
+  TodoList insert(TodoItem todoItem, int index) {
+    final insertedItem = List.of(items)..insert(index, todoItem);
+
+    return copyWith(items: insertedItem);
   }
 }

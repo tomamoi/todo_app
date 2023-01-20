@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/usecase/change_to_garbage_status_usecase.dart';
 import 'package:todo/features/todo/usecase/todo_usecase_importer.dart';
 
 /// グローバルで使用するプロバイダー
@@ -51,6 +52,30 @@ class TodoListNotifier extends AutoDisposeAsyncNotifier<TodoList> {
       );
 
       return state.value!.edit(todoItem);
+    });
+  }
+
+  Future<void> putInTrash(TodoItem item) async {
+    state = await AsyncValue.guard(() async {
+      final todoItem = await ref.read(changeToGarbageStatusUsecaseProvider)(
+        item: item,
+        toGabage: true,
+        isUndoing: false,
+      );
+
+      return state.value!.remove(todoItem);
+    });
+  }
+
+  Future<void> undoToPutInTrash(TodoItem item, int index) async {
+    state = await AsyncValue.guard(() async {
+      final todoItem = await ref.read(changeToGarbageStatusUsecaseProvider)(
+        item: item,
+        toGabage: false,
+        isUndoing: true,
+      );
+
+      return state.value!.insert(todoItem, index);
     });
   }
 }

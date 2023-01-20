@@ -14,7 +14,7 @@ class FetchDeletedTodosUsecase {
 
   Future<List<TodoItem>> call() async {
     try {
-      final todoItemList = await _repository.fetchDeletedTodos();
+      final todoItemList = await _repository.fetchGarbageTodos();
 
       return todoItemList;
     } catch (e, st) {
