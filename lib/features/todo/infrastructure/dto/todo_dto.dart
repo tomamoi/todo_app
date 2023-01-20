@@ -7,7 +7,7 @@ part 'todo_dto.g.dart';
 ///
 /// Isarはfreezedをサポートしていないため、DTOに変換しています。
 ///
-/// ドメインへ変換も含めたデータ受け渡し専用のクラス
+/// DTOはドメインへ変換も含めたデータ受け渡し専用のクラスと定義しています。
 @collection
 class TodoDto {
   TodoDto({
@@ -27,9 +27,13 @@ class TodoDto {
 
   final DateTime createAt;
 
+  // 通常のメモ表示とゴミ箱に入っているメモ表示の２通りがあるため、
+  // 当フラグにindexをつけ、クエリのパフォーマンスをあげます。
   @Index()
   final bool isGarbage;
 
+  // 日付の近い順にメモを表示する必要があるため、
+  // 更新日にindexをつけ、クエリのパフォーマンスをあげます。
   @Index()
   final DateTime updatedAt;
 

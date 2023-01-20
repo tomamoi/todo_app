@@ -16,7 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TodoList {
+  /// メモのリスト
   List<TodoItem> get items => throw _privateConstructorUsedError;
+
+  /// ページングできるかどうかを示すフラグ
+  ///
+  /// これ以上ページングできない場合はtrueとなります。
   bool get hasReachedMax => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -106,7 +111,10 @@ class _$_TodoList extends _TodoList with DiagnosticableTreeMixin {
       : _items = items,
         super._();
 
+  /// メモのリスト
   final List<TodoItem> _items;
+
+  /// メモのリスト
   @override
   List<TodoItem> get items {
     if (_items is EqualUnmodifiableListView) return _items;
@@ -114,6 +122,9 @@ class _$_TodoList extends _TodoList with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(_items);
   }
 
+  /// ページングできるかどうかを示すフラグ
+  ///
+  /// これ以上ページングできない場合はtrueとなります。
   @override
   @JsonKey()
   final bool hasReachedMax;
@@ -160,8 +171,14 @@ abstract class _TodoList extends TodoList {
   const _TodoList._() : super._();
 
   @override
+
+  /// メモのリスト
   List<TodoItem> get items;
   @override
+
+  /// ページングできるかどうかを示すフラグ
+  ///
+  /// これ以上ページングできない場合はtrueとなります。
   bool get hasReachedMax;
   @override
   @JsonKey(ignore: true)

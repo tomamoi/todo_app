@@ -8,20 +8,31 @@ import 'package:todo/features/todo/infrastructure/dto/todo_dto.dart';
 /// Isar.open関数はFutureのため、main.dartにて初期化しています。
 final todoIsarProvider = Provider<Isar>((ref) => throw UnimplementedError());
 
+/// RepositoryProviderはUsecase層内のみで使用すること。
 final todoRepositoryProvider =
     Provider((ref) => TodoRepository(ref.watch(todoIsarProvider)));
+
+/// isarのクエリについては
+/// https://isar.dev/ja/queries.html
+/// を参照してください。
 
 class TodoRepository {
   TodoRepository(this._isar);
   final Isar _isar;
 
-  Future<List<TodoItem>> fetchTodos(int page) async {
+  /// page：取得するメモの個数
+  ///
+  /// offset：取得開始位置の指定（ページングに使用）
+  ///
+  /// [TodoList]のlengthがoffsetとなります。
+  Future<List<TodoItem>> fetchTodos(int page, int offset) async {
     final todoDtoCollection = _isar.todoDtos;
     final todoDtos = await todoDtoCollection
         .where(sort: Sort.desc)
         .anyUpdatedAt()
         .filter()
         .isGarbageEqualTo(false)
+        .offset(offset)
         .limit(page)
         .findAll();
 
@@ -42,6 +53,8 @@ class TodoRepository {
 
   Future<TodoItem> add(TodoDto dto) async {
     final todoDtoCollection = _isar.todoDtos;
+
+    // WriteとReadをトランザクション内にて行っています。
     final todoItem = await _isar.writeTxn(() async {
       final id = await todoDtoCollection.put(dto);
       final todoItem = (await todoDtoCollection.get(id))!.toDomain();

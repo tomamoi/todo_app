@@ -9,7 +9,6 @@ final routerProvider = Provider<GoRouter>((ref) {
 
 final _router = GoRouter(
   routes: [
-    // 最初に表示されるページ
     GoRoute(
       path: '/',
       builder: (context, state) => const TodoPage(),

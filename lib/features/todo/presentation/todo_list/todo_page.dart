@@ -23,7 +23,7 @@ class TodoPage extends ConsumerWidget {
         error: (e, st) {
           Logger().e('todoListAsyncNotifierにエラー発生', e, st);
 
-          return const Center(child: Text('読み込みエラー'));
+          return const Center(child: Text('データベースエラー'));
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (todoList) {

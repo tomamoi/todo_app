@@ -5,7 +5,9 @@ import 'package:todo/features/todo/usecase/change_to_garbage_status_usecase.dart
 import 'package:todo/features/todo/usecase/todo_usecase_importer.dart';
 
 /// グローバルで使用するプロバイダー
-/// 今回はtodoListとなります。
+///
+/// Riverpodを使用すれば、いくらでもグローバルな変数を定義できますが、
+/// できるかぎりグローバル変数を多く作らないことが重要です。
 
 final todoListAsyncNotifierProvider =
     AsyncNotifierProvider.autoDispose<TodoListNotifier, TodoList>(
@@ -16,7 +18,7 @@ class TodoListNotifier extends AutoDisposeAsyncNotifier<TodoList> {
   @override
   FutureOr<TodoList> build() async {
     const todoList = TodoList(items: []);
-    final todoItemList = await ref.read(fetchTodosUsecaseProvider)();
+    final todoItemList = await ref.read(fetchTodosUsecaseProvider)(offset: 0);
 
     return todoList.fetch(todoItemList);
   }

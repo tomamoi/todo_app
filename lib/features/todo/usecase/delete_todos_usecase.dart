@@ -3,11 +3,16 @@ import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
 
+/// UsecaseはPresentation層のみで使用すること
 final deleteTodosUsecaseProvider =
     Provider.autoDispose<DeleteTodosUsecase>((ref) {
   return DeleteTodosUsecase(ref.watch(todoRepositoryProvider));
 });
 
+/// ゴミ箱に入っているメモを削除するロジック並びにエラー処理を行います。
+///
+/// あくまでアプリケーション特有の処理を行うところであり、
+/// ドメイン由来のロジックはドメインクラスに記載することが重要です。
 class DeleteTodosUsecase {
   DeleteTodosUsecase(this._repository);
   final TodoRepository _repository;

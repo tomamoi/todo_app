@@ -16,15 +16,32 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TodoItem {
+  /// メモを識別するユニークなid
+  ///
+  /// isarのidの型がintのため、ドメインのidもintとしています。
   int get id => throw _privateConstructorUsedError;
+
+  /// メモのタイトル
   String get title => throw _privateConstructorUsedError;
+
+  /// メモの内容
   String get discription => throw _privateConstructorUsedError;
+
+  /// メモの作成日
+  ///
+  /// 現状、使用している箇所は特にありません。
   DateTime get createAt => throw _privateConstructorUsedError;
 
-  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  /// ゴミ箱に入っているか否か
   ///
-  /// 90日経過すると完全に削除される設定となっています。
+  /// このアプリではメモを一旦ゴミ箱に格納し、
+  /// 90日経過するとゴミ箱からメモが完全に削除される設定としています。
   bool get isGarbage => throw _privateConstructorUsedError;
+
+  /// メモの更新日
+  ///
+  /// メモの更新日はisarデータベースにてソート対象となります。
+  /// 日付が近い日から順番にメモを表示させます。
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -170,20 +187,37 @@ class _$_TodoItem extends _TodoItem with DiagnosticableTreeMixin {
       required this.updatedAt})
       : super._();
 
+  /// メモを識別するユニークなid
+  ///
+  /// isarのidの型がintのため、ドメインのidもintとしています。
   @override
   final int id;
+
+  /// メモのタイトル
   @override
   final String title;
+
+  /// メモの内容
   @override
   final String discription;
+
+  /// メモの作成日
+  ///
+  /// 現状、使用している箇所は特にありません。
   @override
   final DateTime createAt;
 
-  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  /// ゴミ箱に入っているか否か
   ///
-  /// 90日経過すると完全に削除される設定となっています。
+  /// このアプリではメモを一旦ゴミ箱に格納し、
+  /// 90日経過するとゴミ箱からメモが完全に削除される設定としています。
   @override
   final bool isGarbage;
+
+  /// メモの更新日
+  ///
+  /// メモの更新日はisarデータベースにてソート対象となります。
+  /// 日付が近い日から順番にメモを表示させます。
   @override
   final DateTime updatedAt;
 
@@ -244,20 +278,38 @@ abstract class _TodoItem extends TodoItem {
   const _TodoItem._() : super._();
 
   @override
+
+  /// メモを識別するユニークなid
+  ///
+  /// isarのidの型がintのため、ドメインのidもintとしています。
   int get id;
   @override
+
+  /// メモのタイトル
   String get title;
   @override
+
+  /// メモの内容
   String get discription;
   @override
+
+  /// メモの作成日
+  ///
+  /// 現状、使用している箇所は特にありません。
   DateTime get createAt;
   @override
 
-  /// 完全に削除されておらず、ゴミ箱に入っている場合はtrue。
+  /// ゴミ箱に入っているか否か
   ///
-  /// 90日経過すると完全に削除される設定となっています。
+  /// このアプリではメモを一旦ゴミ箱に格納し、
+  /// 90日経過するとゴミ箱からメモが完全に削除される設定としています。
   bool get isGarbage;
   @override
+
+  /// メモの更新日
+  ///
+  /// メモの更新日はisarデータベースにてソート対象となります。
+  /// 日付が近い日から順番にメモを表示させます。
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)

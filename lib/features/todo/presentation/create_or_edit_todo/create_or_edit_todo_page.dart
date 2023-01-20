@@ -6,6 +6,8 @@ import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/presentation/todo_list_notifier.dart';
 import 'package:todo/theme.dart';
 
+/// メモの編集の場合はメモのタイトルの初期値が存在するので、familyを付与しています。
+/// このファイル内でのみしか使用しないため、アンダースコアを付けるようにしてください。
 final _textEditingControllerProvider =
     Provider.autoDispose.family<TextEditingController, String>((ref, text) {
   final controller = TextEditingController(text: text);
@@ -16,6 +18,8 @@ final _textEditingControllerProvider =
   return controller;
 });
 
+/// メモの編集の場合はメモ内容の初期値が存在するので、familyを付与しています。
+/// このファイル内でのみしか使用しないため、アンダースコアを付けるようにしてください。
 final _discriptionEditingControllerProvider =
     Provider.autoDispose.family<TextEditingController, String>((ref, text) {
   final controller = TextEditingController(text: text);
@@ -53,6 +57,8 @@ class CreateOrEditTodoPage extends ConsumerWidget {
             final title = titleEditingController.text;
             final discription = discriptionEditingController.text;
 
+            // 全く記入していない場合は保存しませんが、
+            // タイトルか内容どちらかが記入されていれば保存されるようにしています。
             if (title.isEmpty && discription.isEmpty) {
               context.pop();
 
@@ -60,6 +66,9 @@ class CreateOrEditTodoPage extends ConsumerWidget {
             }
             final asyncNotifier =
                 ref.read(todoListAsyncNotifierProvider.notifier);
+
+            // データベースにメモの保存を行います。
+            // この時、エラーが発生するとViewStateはAsyncErrorとなります。
             if (item == null) {
               await asyncNotifier.addTodoItem(
                 title: title,
@@ -77,6 +86,9 @@ class CreateOrEditTodoPage extends ConsumerWidget {
                 item: item!,
               );
             }
+
+            // エラーが生じた場合はダイアログを出すため、
+            // 画面遷移をさせないよう早期リターンを行っています。
             if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
             context.pop();
           },

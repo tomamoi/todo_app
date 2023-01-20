@@ -3,13 +3,18 @@ import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
 
-final fetchDeletedTodosUsecaseProvider =
-    Provider.autoDispose<FetchDeletedTodosUsecase>((ref) {
-  return FetchDeletedTodosUsecase(ref.watch(todoRepositoryProvider));
+/// UsecaseはPresentation層のみで使用すること
+final fetchGarbageTodosUsecaseProvider =
+    Provider.autoDispose<FetchGarbageTodosUsecase>((ref) {
+  return FetchGarbageTodosUsecase(ref.watch(todoRepositoryProvider));
 });
 
-class FetchDeletedTodosUsecase {
-  FetchDeletedTodosUsecase(this._repository);
+/// ゴミ箱に入っているメモの取得を行うロジック並びにエラー処理を行います。
+///
+/// あくまでアプリケーション特有の処理を行うところであり、
+/// ドメイン由来のロジックはドメインクラスに記載することが重要です。
+class FetchGarbageTodosUsecase {
+  FetchGarbageTodosUsecase(this._repository);
   final TodoRepository _repository;
 
   Future<List<TodoItem>> call() async {
