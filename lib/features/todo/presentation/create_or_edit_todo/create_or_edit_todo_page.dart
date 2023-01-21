@@ -41,6 +41,43 @@ class CreateOrEditTodoPage extends ConsumerWidget {
   /// 編集の場合は、編集したい[TodoItem]を渡します。
   final TodoItem? item;
 
+  Future<void> _save({
+    required WidgetRef ref,
+    required String title,
+    required String discription,
+  }) async {
+    if (item?.isGarbage == true) return;
+
+    // 全く記入していない場合は保存しませんが、
+    // タイトルか内容どちらかが記入されていれば保存されるようにしています。
+    if (title.isEmpty && discription.isEmpty) {
+      return;
+    }
+    final asyncNotifier = ref.read(todoListAsyncNotifierProvider.notifier);
+
+    // データベースにメモの保存を行います。
+    // この時、エラーが発生するとViewStateはAsyncErrorとなります。
+    if (item == null) {
+      await asyncNotifier.addTodoItem(
+        title: title,
+        discription: discription,
+      );
+    } else {
+      if (title == item!.title && discription == item!.discription) {
+        return;
+      }
+      await asyncNotifier.editTodoItem(
+        title: title,
+        discription: discription,
+        item: item!,
+      );
+    }
+
+    // エラーが生じた場合はダイアログを出すため、
+    // 画面遷移をさせないよう早期リターンを行っています。
+    if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titleEditingController =
@@ -49,104 +86,79 @@ class CreateOrEditTodoPage extends ConsumerWidget {
     final discriptionEditingController = ref
         .watch(_discriptionEditingControllerProvider(item?.discription ?? ''));
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          // 戻るボタン押下で保存されるようにします。
-          onPressed: () async {
-            if (item?.isGarbage == true) {
-              context.pop();
+    return WillPopScope(
+      onWillPop: () async {
+        await _save(
+          ref: ref,
+          title: titleEditingController.text,
+          discription: discriptionEditingController.text,
+        );
 
-              return;
-            }
-            final title = titleEditingController.text;
-            final discription = discriptionEditingController.text;
-
-            // 全く記入していない場合は保存しませんが、
-            // タイトルか内容どちらかが記入されていれば保存されるようにしています。
-            if (title.isEmpty && discription.isEmpty) {
-              context.pop();
-
-              return;
-            }
-            final asyncNotifier =
-                ref.read(todoListAsyncNotifierProvider.notifier);
-
-            // データベースにメモの保存を行います。
-            // この時、エラーが発生するとViewStateはAsyncErrorとなります。
-            if (item == null) {
-              await asyncNotifier.addTodoItem(
-                title: title,
-                discription: discription,
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            // 戻るボタン押下で保存されるようにします。
+            onPressed: () async {
+              await _save(
+                ref: ref,
+                title: titleEditingController.text,
+                discription: discriptionEditingController.text,
               );
-            } else {
-              if (title == item!.title && discription == item!.discription) {
-                context.pop();
-
-                return;
-              }
-              await asyncNotifier.editTodoItem(
-                title: title,
-                discription: discription,
-                item: item!,
-              );
-            }
-
-            // エラーが生じた場合はダイアログを出すため、
-            // 画面遷移をさせないよう早期リターンを行っています。
-            if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
-            context.pop();
-          },
-          icon: Icon(
-            Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+              context.pop();
+            },
+            icon: Icon(
+              Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          child: Column(
-            children: [
-              TextFormField(
-                readOnly: item?.isGarbage == true,
-                controller: titleEditingController,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'タイトル',
-                  hintStyle: TextStyle(
-                    color: AppColor.greyTextColor,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            child: Column(
+              children: [
+                TextFormField(
+                  readOnly: item?.isGarbage == true,
+                  controller: titleEditingController,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'タイトル',
+                    hintStyle: TextStyle(
+                      color: AppColor.greyTextColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                readOnly: item?.isGarbage == true,
-                controller: discriptionEditingController,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w300,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: '本文を記入してください',
-                  hintStyle: TextStyle(
-                    color: AppColor.greyTextColor,
+                const SizedBox(height: 30),
+                TextFormField(
+                  readOnly: item?.isGarbage == true,
+                  controller: discriptionEditingController,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w300,
                   ),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '本文を記入してください',
+                    hintStyle: TextStyle(
+                      color: AppColor.greyTextColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
