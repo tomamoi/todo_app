@@ -72,6 +72,18 @@ class TodoRepository {
     return;
   }
 
+  Future<List<TodoItem>> fetchTodoListScheduledToDelete() async {
+    final todoDtoCollection = _isar.todoDtos;
+    final todoDtos = await todoDtoCollection
+        .where()
+        .updatedAtLessThan(DateTime.now().subtract(const Duration(days: 90)))
+        .filter()
+        .isGarbageEqualTo(true)
+        .findAll();
+
+    return todoDtos.map((dto) => dto.toDomain()).toList();
+  }
+
   Future<void> deleteAll(List<TodoItem> todoList) async {
     final todoDtoCollection = _isar.todoDtos;
     await _isar.writeTxn(() =>

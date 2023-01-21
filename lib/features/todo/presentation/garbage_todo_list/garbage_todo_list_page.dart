@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/presentation/garbage_todo_list/garbage_todo_list_notifier.dart';
 import 'package:todo/features/todo/presentation/todo_presentation_importer.dart';
-import 'package:todo/features/todo/usecase/todo_usecase_importer.dart';
+import 'package:todo/features/todo/presentation/widgets/custom_snack_bar.dart';
 import 'package:todo/theme.dart';
-
-final _garbageTodoListProvider = FutureProvider.autoDispose<List<TodoItem>>(
-  (ref) async {
-    final garbageTodoList = await ref.read(fetchGarbageTodosUsecaseProvider)();
-
-    return garbageTodoList;
-  },
-);
 
 class GarbageTodoListPage extends ConsumerWidget {
   const GarbageTodoListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncValue = ref.watch(garbageTodoListAsyncNotifierProvider);
+    final notifier = ref.watch(garbageTodoListAsyncNotifierProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.greyColor,
@@ -46,7 +41,7 @@ class GarbageTodoListPage extends ConsumerWidget {
                 ),
                 SizedBox(height: 7),
                 Text(
-                  '⇦左にスワイプすると完全に削除されます。\n復元したい時は、⇨右にスワイプして下さい。',
+                  '復元したい時は、⇨右にスワイプして下さい。',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColor.paleTextColor,
@@ -56,38 +51,48 @@ class GarbageTodoListPage extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: ref.watch(_garbageTodoListProvider).when(
-                  error: (e, st) {
-                    Logger().e('_garbageTodoListProviderにエラー発生', e, st);
+            child: asyncValue.when(
+              error: (e, st) {
+                Logger().e('_garbageTodoListProviderにエラー発生', e, st);
 
-                    return const Center(child: Text('データベースエラー'));
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  data: (garbageTodoList) {
-                    return RefreshIndicator(
-                      onRefresh: () async =>
-                          ref.invalidate(_garbageTodoListProvider),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ListView.builder(
-                          itemCount: garbageTodoList.length,
-                          itemBuilder: (context, index) {
-                            final item = garbageTodoList[index];
+                return const Center(child: Text('データベースエラー'));
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              data: (garbageTodoList) {
+                return RefreshIndicator(
+                  onRefresh: () async =>
+                      ref.invalidate(garbageTodoListAsyncNotifierProvider),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: ListView.builder(
+                      itemCount: garbageTodoList.length,
+                      itemBuilder: (context, index) {
+                        final item = garbageTodoList.items[index];
 
-                            return Dismissible(
-                              key: Key(item.id.toString()),
-                              onDismissed: (direction) {},
-                              child: TodoCard(
-                                todoItem: item,
-                              ),
-                            );
+                        return Dismissible(
+                          key: Key(item.id.toString()),
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) async {
+                            await notifier.returnFromTrash(item);
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(CustomSnackBar(
+                              message: 'メモをゴミ箱から戻しました',
+                              undoLabel: '取消',
+                              onUndid: () =>
+                                  notifier.undoToReturnFromTrash(item, index),
+                            ));
                           },
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                          child: TodoCard(
+                            todoItem: item,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
