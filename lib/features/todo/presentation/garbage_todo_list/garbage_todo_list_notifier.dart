@@ -15,6 +15,8 @@ class GarbageTodoListNotifier extends AutoDisposeAsyncNotifier<TodoList> {
   @override
   FutureOr<TodoList> build() async {
     const todoList = TodoList(items: []);
+
+    // 90日間ゴミ箱に存在しているメモはローカルから削除します。
     await ref.read(deleteTodosUsecaseProvider)();
     final todoItemList = await ref.read(fetchGarbageTodosUsecaseProvider)();
 

@@ -72,10 +72,6 @@ class CreateOrEditTodoPage extends ConsumerWidget {
         item: item!,
       );
     }
-
-    // エラーが生じた場合はダイアログを出すため、
-    // 画面遷移をさせないよう早期リターンを行っています。
-    if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
   }
 
   @override
@@ -87,15 +83,7 @@ class CreateOrEditTodoPage extends ConsumerWidget {
         .watch(_discriptionEditingControllerProvider(item?.discription ?? ''));
 
     return WillPopScope(
-      onWillPop: () async {
-        await _save(
-          ref: ref,
-          title: titleEditingController.text,
-          discription: discriptionEditingController.text,
-        );
-
-        return true;
-      },
+      onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -106,6 +94,9 @@ class CreateOrEditTodoPage extends ConsumerWidget {
                 title: titleEditingController.text,
                 discription: discriptionEditingController.text,
               );
+              // エラーが生じた場合はダイアログを出すため、
+              // 画面遷移をさせないよう早期リターンを行っています。
+              if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
               context.pop();
             },
             icon: Icon(

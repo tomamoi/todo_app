@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
+import 'package:todo/constants.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/dto/todo_dto.dart';
 
@@ -76,7 +77,9 @@ class TodoRepository {
     final todoDtoCollection = _isar.todoDtos;
     final todoDtos = await todoDtoCollection
         .where()
-        .updatedAtLessThan(DateTime.now().subtract(const Duration(days: 90)))
+        .updatedAtLessThan(
+          DateTime.now().subtract(const Duration(days: deletedDurationDays)),
+        )
         .filter()
         .isGarbageEqualTo(true)
         .findAll();
