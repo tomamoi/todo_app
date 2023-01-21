@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/presentation/todo_list/widgets/todo_card.dart';
+import 'package:todo/features/todo/presentation/todo_list/widgets/todo_drawer.dart';
 import 'package:todo/features/todo/presentation/todo_list_notifier.dart';
 
 final _scrollControllerProvider = Provider.autoDispose<ScrollController>(
@@ -28,8 +29,8 @@ final _scrollControllerProvider = Provider.autoDispose<ScrollController>(
   },
 );
 
-class TodoPage extends ConsumerWidget {
-  const TodoPage({super.key});
+class TodoListPage extends ConsumerWidget {
+  const TodoListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,6 +43,7 @@ class TodoPage extends ConsumerWidget {
         onPressed: () => context.push('/create'),
         child: const Icon(Icons.edit),
       ),
+      drawer: const TodoDrawer(),
       body: asyncValue.when(
         error: (e, st) {
           Logger().e('todoListAsyncNotifierにエラー発生', e, st);

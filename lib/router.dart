@@ -11,7 +11,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const TodoPage(),
+      builder: (context, state) => const TodoListPage(),
     ),
     GoRoute(
       path: '/create',
@@ -21,6 +21,10 @@ final _router = GoRouter(
       path: '/todo/:id',
       builder: (context, state) =>
           CreateOrEditTodoPage(item: state.extra! as TodoItem),
+    ),
+    GoRoute(
+      path: '/garbage',
+      builder: (context, state) => const GarbageTodoListPage(),
     ),
   ],
 );
