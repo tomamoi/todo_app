@@ -13,7 +13,7 @@ class TodoCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/todo/${todoItem.id}', extra: todoItem),
       child: Container(
-        margin: const EdgeInsets.only(top: 25, left: 15, right: 15),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         padding:
             const EdgeInsets.only(top: 16, bottom: 18, left: 15, right: 15),
         decoration: BoxDecoration(

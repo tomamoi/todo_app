@@ -23,12 +23,22 @@ class TodoListNotifier extends AutoDisposeAsyncNotifier<TodoList> {
     return todoList.fetch(todoItemList);
   }
 
+  Future<void> fetchMore() async {
+    // 取得済みのデータを保持しながら状態をローディング中にします。
+    state = const AsyncValue<TodoList>.loading().copyWithPrevious(state);
+    state = await AsyncValue.guard(() async {
+      final fetchedTodoList = await ref.read(fetchTodosUsecaseProvider)(
+        offset: state.value!.length,
+      );
+
+      return state.value!.fetch(fetchedTodoList);
+    });
+  }
+
   Future<void> addTodoItem({
     required String title,
     required String discription,
   }) async {
-    // 取得済みのデータを保持しながら状態をローディング中にします。
-    state = const AsyncValue<TodoList>.loading().copyWithPrevious(state);
     state = await AsyncValue.guard(() async {
       final todoItem = await ref.read(addTodoUsecaseProvider)(
         title: title,
@@ -44,8 +54,6 @@ class TodoListNotifier extends AutoDisposeAsyncNotifier<TodoList> {
     required String discription,
     required TodoItem item,
   }) async {
-    // 取得済みのデータを保持しながら状態をローディング中にします。
-    state = const AsyncValue<TodoList>.loading().copyWithPrevious(state);
     state = await AsyncValue.guard(() async {
       final todoItem = await ref.read(editTodoUsecaseProvider)(
         title: title,
