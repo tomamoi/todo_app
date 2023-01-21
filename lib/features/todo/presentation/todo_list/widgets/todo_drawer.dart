@@ -11,6 +11,7 @@ class TodoDrawer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 80, left: 15, right: 15),
         child: ListView(
+          physics: const ClampingScrollPhysics(),
           children: [
             Row(
               children: [

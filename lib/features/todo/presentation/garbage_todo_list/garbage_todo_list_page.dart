@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
+import 'package:todo/features/todo/presentation/todo_presentation_importer.dart';
 import 'package:todo/features/todo/usecase/todo_usecase_importer.dart';
 import 'package:todo/theme.dart';
-
-import '../todo_list/widgets/todo_card.dart';
 
 final _garbageTodoListProvider = FutureProvider.autoDispose<List<TodoItem>>(
   (ref) async {
@@ -76,7 +75,13 @@ class GarbageTodoListPage extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final item = garbageTodoList[index];
 
-                            return TodoCard(todoItem: item);
+                            return Dismissible(
+                              key: Key(item.id.toString()),
+                              onDismissed: (direction) {},
+                              child: TodoCard(
+                                todoItem: item,
+                              ),
+                            );
                           },
                         ),
                       ),

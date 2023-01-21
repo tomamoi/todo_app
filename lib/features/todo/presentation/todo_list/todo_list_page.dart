@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:todo/features/todo/presentation/todo_list/widgets/todo_card.dart';
+import 'package:todo/features/todo/presentation/widgets/todo_card.dart';
 import 'package:todo/features/todo/presentation/todo_list/widgets/todo_drawer.dart';
 import 'package:todo/features/todo/presentation/todo_list_notifier.dart';
 

@@ -54,6 +54,11 @@ class CreateOrEditTodoPage extends ConsumerWidget {
         leading: IconButton(
           // 戻るボタン押下で保存されるようにします。
           onPressed: () async {
+            if (item?.isGarbage == true) {
+              context.pop();
+
+              return;
+            }
             final title = titleEditingController.text;
             final discription = discriptionEditingController.text;
 
@@ -103,6 +108,7 @@ class CreateOrEditTodoPage extends ConsumerWidget {
           child: Column(
             children: [
               TextFormField(
+                readOnly: item?.isGarbage == true,
                 controller: titleEditingController,
                 style: const TextStyle(
                   fontSize: 18,
@@ -122,6 +128,7 @@ class CreateOrEditTodoPage extends ConsumerWidget {
               ),
               const SizedBox(height: 30),
               TextFormField(
+                readOnly: item?.isGarbage == true,
                 controller: discriptionEditingController,
                 style: const TextStyle(
                   fontSize: 16,

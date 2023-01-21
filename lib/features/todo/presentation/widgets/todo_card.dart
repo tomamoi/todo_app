@@ -4,7 +4,10 @@ import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/theme.dart';
 
 class TodoCard extends StatelessWidget {
-  const TodoCard({super.key, required this.todoItem});
+  const TodoCard({
+    super.key,
+    required this.todoItem,
+  });
 
   final TodoItem todoItem;
 
