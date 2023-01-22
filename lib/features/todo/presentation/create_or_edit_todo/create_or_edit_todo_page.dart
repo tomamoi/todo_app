@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -82,12 +81,10 @@ class CreateOrEditTodoPage extends ConsumerWidget {
     final discriptionEditingController = ref
         .watch(_discriptionEditingControllerProvider(item?.discription ?? ''));
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            // 戻るボタン押下で保存されるようにします。
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
             onPressed: () async {
               await _save(
                 ref: ref,
@@ -99,57 +96,55 @@ class CreateOrEditTodoPage extends ConsumerWidget {
               if (ref.read(todoListAsyncNotifierProvider) is AsyncError) return;
               context.pop();
             },
-            icon: Icon(
-              Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-            ),
+            icon: const Icon(Icons.save),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            child: Column(
-              children: [
-                TextFormField(
-                  readOnly: item?.isGarbage == true,
-                  controller: titleEditingController,
-                  style: const TextStyle(
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          child: Column(
+            children: [
+              TextFormField(
+                readOnly: item?.isGarbage == true,
+                controller: titleEditingController,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'タイトル',
+                  hintStyle: TextStyle(
+                    color: AppColor.greyTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'タイトル',
-                    hintStyle: TextStyle(
-                      color: AppColor.greyTextColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
                 ),
-                const SizedBox(height: 30),
-                TextFormField(
-                  readOnly: item?.isGarbage == true,
-                  controller: discriptionEditingController,
-                  style: const TextStyle(
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                readOnly: item?.isGarbage == true,
+                controller: discriptionEditingController,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
+                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '本文を記入してください',
+                  hintStyle: TextStyle(
+                    color: AppColor.greyTextColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w300,
                   ),
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '本文を記入してください',
-                    hintStyle: TextStyle(
-                      color: AppColor.greyTextColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final editTodoUsecaseProvider = Provider.autoDispose<EditTodoUsecase>((ref) {
@@ -31,7 +32,7 @@ class EditTodoUsecase {
       return updatedTodoItem;
     } catch (e, st) {
       Logger().e('EditTodoUsecaseでのエラー', e, st);
-      throw Exception('メモを編集できませんでした。');
+      throw CustomException('メモを編集できませんでした。');
     }
   }
 }

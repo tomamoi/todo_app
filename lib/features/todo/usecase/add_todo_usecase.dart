@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final addTodoUsecaseProvider = Provider.autoDispose<AddTodoUsecase>((ref) {
@@ -34,7 +35,7 @@ class AddTodoUsecase {
       return todoItem;
     } catch (e, st) {
       Logger().e('AddTodoUsecaseでのエラー', e, st);
-      throw Exception('メモを保存できませんでした。');
+      throw CustomException('メモを保存できませんでした。');
     }
   }
 }

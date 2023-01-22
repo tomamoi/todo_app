@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final changeToGarbageStatusUsecaseProvider =
@@ -34,7 +35,7 @@ class ChangeToGarbageStatusUsecase {
       return garbageTodoItem;
     } catch (e, st) {
       Logger().e('ChangeToGarbageStatusUsecaseでのエラー', e, st);
-      throw Exception('メモのゴミ状態を変更できませんでした。');
+      throw CustomException('メモのゴミ状態を変更できませんでした。');
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final deleteTodosUsecaseProvider =
@@ -25,7 +26,7 @@ class DeleteTodosUsecase {
       return;
     } catch (e, st) {
       Logger().e('DeleteTodosUsecaseでのエラー', e, st);
-      throw Exception('メモをローカルから削除できませんでした。');
+      throw CustomException('メモをローカルから削除できませんでした。');
     }
   }
 }

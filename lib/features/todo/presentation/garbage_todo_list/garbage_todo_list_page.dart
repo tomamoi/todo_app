@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/presentation/garbage_todo_list/garbage_todo_list_notifier.dart';
 import 'package:todo/features/todo/presentation/todo_presentation_importer.dart';
-import 'package:todo/features/todo/presentation/widgets/custom_snack_bar.dart';
+import 'package:todo/features/todo/presentation/widgets/snack_bar.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 import 'package:todo/theme.dart';
 
 class GarbageTodoListPage extends ConsumerWidget {
@@ -13,6 +14,16 @@ class GarbageTodoListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncValue = ref.watch(garbageTodoListAsyncNotifierProvider);
     final notifier = ref.watch(garbageTodoListAsyncNotifierProvider.notifier);
+
+    // AsyncErrorの場合はSnackBarを表示させることで、ユーザーにエラー状態を伝えることができます。
+    // ユーザーへのメッセージはUsecase層にて定義しています。
+    ref.listen(garbageTodoListAsyncNotifierProvider, (previous, next) {
+      if (next is AsyncError) {
+        ScaffoldMessenger.of(context).showSnackBar(CustomErrorSnackBar(
+          message: (next.error! as CustomException).message,
+        ));
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +63,7 @@ class GarbageTodoListPage extends ConsumerWidget {
           ),
           Expanded(
             child: asyncValue.when(
+              skipError: true,
               error: (e, st) {
                 Logger().e('_garbageTodoListProviderにエラー発生', e, st);
 

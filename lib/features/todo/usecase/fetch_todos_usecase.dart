@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:todo/constants.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final fetchTodosUsecaseProvider =
@@ -25,7 +26,7 @@ class FetchTodosUsecase {
       return todoItemList;
     } catch (e, st) {
       Logger().e('FetchTodosUsecaseでのエラー', e, st);
-      throw Exception('メモを取得できませんでした。');
+      throw CustomException('メモを取得できませんでした。');
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/features/todo/domain/todo_domain_importer.dart';
 import 'package:todo/features/todo/infrastructure/todo_infrastructure_importer.dart';
+import 'package:todo/features/todo/usecase/custom_exception.dart';
 
 /// UsecaseはPresentation層のみで使用すること
 final fetchGarbageTodosUsecaseProvider =
@@ -24,7 +25,7 @@ class FetchGarbageTodosUsecase {
       return todoItemList;
     } catch (e, st) {
       Logger().e('FetchDeletedTodosUsecaseでのエラー', e, st);
-      throw Exception('ゴミ箱に存在するメモを取得できませんでした。');
+      throw CustomException('ゴミ箱に存在するメモを取得できませんでした。');
     }
   }
 }
