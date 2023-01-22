@@ -1,10 +1,19 @@
-# todo
+# TODO アプリ
 
-A new Flutter project.
+このアプリは Flutter を使用した TODO アプリです。
+Flutter の開発で必要な基本知識の習得に役立てるリポジトリです。
 
-## Getting Started
+## このアプリの特徴
 
-This project is a starting point for a Flutter application.
+本アプリでは以下の特徴を持っています。
+
+- メモの追加、編集、削除、取得
+- アーカイブ機能（ゴミ箱）
+- メモのページング機能
+- ゴミ箱に存在しているメモの自動削除機能
+- SnackBar の表示、取消機能
+
+![todo_demo](https://user-images.githubusercontent.com/62784463/213902973-4a278e61-57e1-416b-a333-bc62ff51ba8b.gif)
 
 A few resources to get you started if this is your first Flutter project:
 

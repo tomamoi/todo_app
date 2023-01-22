@@ -54,7 +54,7 @@ class TodoItem with _$TodoItem {
       );
 
   String get updatedAtText {
-    final formatter = DateFormat('yyyy年MM月dd日(E)HH:mm');
+    final formatter = DateFormat('yyyy年MM月dd日(E)HH:mm', 'ja');
 
     return formatter.format(updatedAt);
   }
